@@ -1,0 +1,10 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = "weather">
+    Get current weather at given airport (Use ICAO code)<br>
+    <form method="POST" action="/wxresult">
+        <input type="text" name="icao">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{%endblock%}

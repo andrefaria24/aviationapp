@@ -1,0 +1,13 @@
+{%extends "layout.html"%}
+{%block content%}
+<script>
+    function clearMetar(){
+        document.getElementById("result").value = ""
+    }
+</script>
+<div class = "wxresult">
+    Current METAR at <b>{{ aptCode }}</b><br>
+    <textarea id="result" readonly cols="75" rows="3">{{ MetarRaw }}</textarea><br>
+    <input type="button" onclick="javascript:clearMetar();" value="Clear">
+</div>
+{%endblock%}
