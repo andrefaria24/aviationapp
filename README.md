@@ -1,11 +1,11 @@
 Aviation App
 -------------------------------
-A simple Python web application utilizing the Flask framework that retrieves information related to north american airports and aviation weather.
+A simple Python web application utilizing the Flask framework with Jinja templating that retrieves information related to north american airports and aviation weather.
 
 Info
 -------------------------------
 
-Currently only retrieving latest weather information for a select airport. ICAO code is required for querying (ex: KJFK for John F Kennedy International Airport).
+Currently only retrieving weather information. ICAO code is required for querying (ex: KJFK for John F Kennedy International Airport).
 
 Weather information is retreived in METAR format.
 
