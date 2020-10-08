@@ -1,13 +1,19 @@
 {%extends "layout.html"%}
 {%block content%}
-<script>
+<script type="text/javascript">
     function clearMetar(){
         document.getElementById("result").value = ""
     }
 </script>
 <div class = "wxresult">
-    Current METAR at <b>{{ aptCode }}</b><br>
-    <textarea id="result" readonly cols="75" rows="3">{{ MetarRaw }}</textarea><br>
-    <input type="button" onclick="javascript:clearMetar();" value="Clear">
+    {% if wxvalue == "wxsingle" %}
+        Current METAR data for <b>{{ aptCode }}</b><br><br>
+        {{ MetarData }}
+    {% else %}
+        Current METAR data for airports within 25nm radius of <b>{{ aptCode }}</b><br><br>
+        {% for item in MetarData %}
+            {{ item }}<br><br>
+        {% endfor %}
+    {% endif %}
 </div>
 {%endblock%}
