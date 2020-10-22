@@ -1,19 +1,17 @@
-from flask import Flask, render_template, request
-from flask import Flask, url_for, render_template, redirect
-from forms import weatherForm, weatherResultForm
 import requests
 import os
 import xml.etree.ElementTree as ET
+import bs4
+import re
+from flask import Flask, render_template, request
+from flask import Flask, url_for, render_template, redirect
+from forms import weatherForm, weatherResultForm, aptinfoForm
+from webcalls import awcAPI, awcStationInfo, awcCurrentWeather, awcRadialWeather, skyvectorAirportInfo
 
 app = Flask(__name__)
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
-
-awcAPI = 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?'
-awcStationInfo = "dataSource=stations&requestType=retrieve&format=xml&stationString="
-awcCurrentWeather = 'dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=2&mostRecent=true&stationString='
-awcRadialWeather = "dataSource=stations&requestType=retrieve&format=xml&radialDistance="
 
 #Function that retreives current raw METAR data at given airport
 def getWeather(aptcode):
@@ -66,7 +64,52 @@ def getRadiusWeather(aptcode):
     else:
         print("FAILED. Status Code: " + reqGetStationInfo.status_code)
 
-    print(getRadiusWeather.AllStations)
+def getAirportInfo(aptcode):
+    aptreq = skyvectorAirportInfo+aptcode
+    html = requests.get(aptreq).text
+    soup = bs4.BeautifulSoup(html, "html.parser")
+
+    aptName = soup.find('div', attrs={'id':'titlebgright'}).text
+    
+    ctwr = soup.find('th', text="Control Tower:").find_next_sibling().text
+    if (ctwr == "Yes"):
+        twr = soup.find('th', text=re.compile("TOWER:")).find_next_sibling().text
+        gnd = soup.find('th', text=re.compile("GROUND:")).find_next_sibling().text
+    else:
+        twr = ''
+        gnd = ''
+    
+    atischeck = soup.find('th', text="ATIS:")
+    if (atischeck != None):
+        atis = atischeck.find_next_sibling().text
+    else:
+        atis = ''
+    
+    asoscheck = soup.find('th', text="ASOS:")
+    if (asoscheck != None):
+        asos = asoscheck.find_next_sibling().text
+    else:
+        asos = ''
+
+    ctafcheck = soup.find('th', text="CTAF:")
+    if (ctafcheck != None):
+        ctaf = ctafcheck.find_next_sibling().text
+    else:
+        ctaf = ''
+
+    depcheck = soup.find('th', text=re.compile("DEPARTURE:"))
+    if (depcheck != None):
+        dep = depcheck.find_next_sibling().text
+    else:
+        dep = ''
+
+    appcheck = soup.find('th', text=re.compile("APPROACH:"))
+    if (appcheck != None):
+        app = appcheck.find_next_sibling().text
+    else:
+        app = ''
+
+    return aptName, twr, gnd, atis, asos, ctaf, dep, app
 
 #Home page
 @app.route('/')
@@ -81,7 +124,7 @@ def weather():
 #Display weather results
 @app.route('/wxresult', methods=['POST'])
 def wxresult():
-    #Retreive value from weather form and call AviationWeather API to get current METAR
+    #Retrieve value from weather form and call AviationWeather API to get current METAR
     if request.method=='POST':
         wxvalue = weatherForm().wxchoice.data
         aptcode = weatherForm().icao.data.upper()
@@ -92,6 +135,20 @@ def wxresult():
         if wxvalue == 'wxradius':
             getRadiusWeather(aptcode)
             return render_template('wxresult.html', form=weatherResultForm(), MetarData = getRadiusWeather.AllStations, aptCode = aptcode, wxvalue = wxvalue)
+
+#Get airport information page
+@app.route('/aptinfo', methods=['GET'])
+def aptinfo():
+    return render_template('aptinfo.html', form=aptinfoForm())
+
+#Display airport information results page
+@app.route('/aptinforesult', methods=['POST'])
+def aptinforesult():
+    aptcode = aptinfoForm().icao.data.upper()
+
+    aptName, twr, gnd, atis, asos, ctaf, dep, app = getAirportInfo(aptcode)
+    
+    return render_template('aptinforesult.html', aptcode = aptcode, aptName = aptName, tower = twr, ground = gnd, atis = atis, asos = asos, ctaf = ctaf, dep = dep, app = app)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port='8080')

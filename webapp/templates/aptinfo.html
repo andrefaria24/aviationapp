@@ -1,0 +1,12 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = "aptinfo">
+    <p>
+        Get airport information. Please use ICAO code for airport selection<br>
+        <form method="POST" action="/aptinforesult">
+            {{ form.icao(size=25) }}
+            {{ form.submit }}
+        </form>
+    </p>
+</div>
+{%endblock%}

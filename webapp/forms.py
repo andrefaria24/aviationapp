@@ -9,4 +9,7 @@ class weatherForm(FlaskForm):
 
 class weatherResultForm(FlaskForm):
     result = TextField('Result')
-    clear = SubmitField('Clear')
+
+class aptinfoForm(FlaskForm):
+    icao = TextField('ICAO')
+    submit = SubmitField('Submit')

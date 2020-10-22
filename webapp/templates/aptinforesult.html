@@ -1,0 +1,53 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = "aptinforesult">
+    <b>{{ aptName }}</b> - ({{ aptcode }})
+    <p>
+        <table>
+            Communications
+            {% if tower != "" %}
+            <tr>
+                <th>Tower</th>
+                <td>{{ tower }}</td>
+            </tr>
+            {% endif %}
+            {% if ground != "" %}
+            <tr>
+                <th>Ground</th>
+                <td>{{ ground }}</td>
+            </tr>
+            {% endif %}
+            {% if atis != "" %}
+            <tr>
+                <th>ATIS</th>
+                <td>{{ atis }}</td>
+            </tr>
+            {% endif %}
+            {% if asos != "" %}
+            <tr>
+                <th>ASOS</th>
+                <td>{{ asos }}</td>
+            </tr>
+            {% endif %}
+            {% if ctaf != "" %}
+            <tr>
+                <th>CTAF</th>
+                <td>{{ ctaf }}</td>
+            </tr>
+            {% endif %}
+            {% if dep != "" %}
+            <tr>
+                <th>Departure</th>
+                <td>{{ dep }}</td>
+            </tr>
+            {% endif %}
+            {% if app != "" %}
+            <tr>
+                <th>Approach</th>
+                <td>{{ app }}</td>
+            </tr>
+            {% endif %}
+        </table>
+    </p>
+</div>
+{%endblock%}
