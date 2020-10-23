@@ -5,7 +5,7 @@ import bs4
 import re
 from flask import Flask, render_template, request
 from flask import Flask, url_for, render_template, redirect
-from forms import weatherForm, weatherResultForm, aptinfoForm
+from forms import weatherForm, weatherResultForm, aptinfoForm, wbForm
 from webcalls import awcAPI, awcStationInfo, awcCurrentWeather, awcRadialWeather, skyvectorAirportInfo
 
 app = Flask(__name__)
@@ -64,6 +64,7 @@ def getRadiusWeather(aptcode):
     else:
         print("FAILED. Status Code: " + reqGetStationInfo.status_code)
 
+#Function that retrieves information for given airport
 def getAirportInfo(aptcode):
     aptreq = skyvectorAirportInfo+aptcode
     html = requests.get(aptreq).text
@@ -149,6 +150,54 @@ def aptinforesult():
     aptName, twr, gnd, atis, asos, ctaf, dep, app = getAirportInfo(aptcode)
     
     return render_template('aptinforesult.html', aptcode = aptcode, aptName = aptName, tower = twr, ground = gnd, atis = atis, asos = asos, ctaf = ctaf, dep = dep, app = app)
+
+#Aircraft weight and balance page
+@app.route('/wb', methods=['GET', 'POST'])
+def wb():
+    #N9121H W&B Numbers
+    emptyWeight = 1486
+    emptyWeightArm = 39.04
+    emptyWeightMom = emptyWeight * emptyWeightArm
+    frontSeatArm = 37.00
+    backSeatArm = 73.00
+    baggage1Arm = 95.00
+    baggage2Arm = 123.00
+    fuelArm = 48.00
+
+    #Insert W&B data in form
+    if request.method == 'GET':
+        return render_template('wb.html', form=wbForm(), emptyWeight = emptyWeight, emptyWeightArm = emptyWeightArm, emptyWeightMom = emptyWeightMom, frontSeatArm = frontSeatArm, backSeatArm = backSeatArm, baggage1Arm = baggage1Arm, baggage2Arm = baggage2Arm, fuelArm = fuelArm)
+
+    #Calculate W&B numbers and display in form
+    elif request.method == 'POST':
+
+        frontSeatWeightL = request.form['frontSeatWeightL']
+        frontSeatWeightR = request.form['frontSeatWeightR']
+        frontSeatMom = (float(frontSeatWeightL) + float(frontSeatWeightR)) * frontSeatArm
+
+        backSeatWeightL = request.form['backSeatWeightL']
+        backSeatWeightR = request.form['backSeatWeightR']
+        backSeatMom = (float(backSeatWeightL) + float(backSeatWeightR)) * backSeatArm
+
+        baggage1Weight = request.form['baggage1Weight']
+        baggage1Mom = float(baggage1Weight) * float(baggage1Arm)
+
+        baggage2Weight = request.form['baggage2Weight']
+        baggage2Mom = float(baggage2Weight) * float(baggage2Arm)
+
+        zFuelWeight = float(emptyWeight) + float(frontSeatWeightL) + float(frontSeatWeightR) + float(backSeatWeightL) + float(backSeatWeightR) + float(baggage1Weight) + float(baggage2Weight)
+        zFuelMom = emptyWeightMom + frontSeatMom + backSeatMom + baggage1Mom + baggage2Mom
+        zFuelArm = zFuelMom / zFuelWeight
+
+        fuelGal = request.form['fuelGal']
+        fuelWeight = float(fuelGal) * 6
+        fuelMom = fuelWeight * fuelArm
+
+        totalWeight = zFuelWeight + fuelWeight
+        totalMom = zFuelMom + fuelMom
+        totalArm = totalMom / totalWeight
+        
+        return render_template('wb.html', form=wbForm(), emptyWeight = emptyWeight, emptyWeightArm = emptyWeightArm, emptyWeightMom = emptyWeightMom, frontSeatWeightL = frontSeatWeightL, frontSeatWeightR = frontSeatWeightR, backSeatWeightL = backSeatWeightL, backSeatWeightR = backSeatWeightR, baggage1Weight = baggage1Weight, baggage2Weight = baggage2Weight, frontSeatArm = frontSeatArm, backSeatArm = backSeatArm, baggage1Arm = baggage1Arm, baggage2Arm = baggage2Arm, fuelArm = fuelArm, frontSeatMom = frontSeatMom, backSeatMom = backSeatMom, baggage1Mom = baggage1Mom, baggage2Mom = baggage2Mom, zFuelWeight = zFuelWeight, zFuelMom = "{:.2f}".format(zFuelMom), zFuelArm = "{:.2f}".format(zFuelArm), fuelWeight = fuelWeight, fuelMom = "{:.2f}".format(fuelMom), fuelGal = fuelGal, totalWeight = totalWeight, totalMom = totalMom, totalArm = "{:.2f}".format(totalArm))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port='8080')

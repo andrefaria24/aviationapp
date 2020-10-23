@@ -1,0 +1,73 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = "wb">
+    <b>Weight & Balance - N9121H C172M</b>
+    <p>
+        <form method="POST" action="/wb">
+            <table>
+                <tr>
+                    <th></th>
+                    <th colspan="2">Weight</th>
+                    <th>Arm</th>
+                    <th>Moment</th>
+                </tr>
+                <tr>
+                    <td>Empty Weight + Oil</td>
+                    <td></td>
+                    <td>{{ emptyWeight }}</td>
+                    <td>{{ emptyWeightArm }}</td>
+                    <td>{{ emptyWeightMom }}</td>
+                </tr>
+                <tr>
+                    <td>Front Seats</td>
+                    <td>{% if request.method=="GET" %} {{ form.frontSeatWeightL(value=0) }} {% else %} {{ frontSeatWeightL }} {% endif %}</td>
+                    <td>{% if request.method=="GET" %} {{ form.frontSeatWeightR(value=0) }} {% else %} {{ frontSeatWeightR }} {% endif %}</td>
+                    <td>{{ frontSeatArm }}</td>
+                    <td>{{ frontSeatMom }}</td>
+                </tr>
+                <tr>
+                    <td>Back Seats</td>
+                    <td>{% if request.method=="GET" %} {{ form.backSeatWeightL(value=0) }} {% else %} {{ backSeatWeightL }} {% endif %}</td>
+                    <td>{% if request.method=="GET" %} {{ form.backSeatWeightR(value=0) }} {% else %} {{ backSeatWeightR }} {% endif %}</td>
+                    <td>{{ backSeatArm }}</td>
+                    <td>{{ backSeatMom }}</td>
+                </tr>
+                <tr>
+                    <td>Baggage 1</td>
+                    <td colspan="2">{% if request.method=="GET" %} {{ form.baggage1Weight(value=0) }} {% else %} {{ baggage1Weight }} {% endif %}</td>
+                    <td>{{ baggage1Arm }}</td>
+                    <td>{{ baggage1Mom }}</td>
+                </tr>
+                <tr>
+                    <td>Baggage 2</td>
+                    <td colspan="2">{% if request.method=="GET" %} {{ form.baggage2Weight(value=0) }} {% else %} {{ baggage2Weight }} {% endif %}</td>
+                    <td>{{ baggage2Arm }}</td>
+                    <td>{{ baggage2Mom }}</td>
+                </tr>
+                <tr>
+                    <td>Zero fuel weight</td>
+                    <td colspan="2">{{ zFuelWeight }}</td>
+                    <td>{{ zFuelArm }}</td>
+                    <td>{{ zFuelMom }}</td>
+                </tr>
+                <tr>
+                    <td>Fuel {% if request.method=="GET" %} {{ form.fuelGal(value=48) }} {% else %} {{ fuelGal }} {% endif %} (gals)</td>
+                    <td colspan="2">{{ fuelWeight }}</td>
+                    <td>{{ fuelArm }}</td>
+                    <td>{{ fuelMom }}</td>
+                </tr>
+                <tr>
+                    <td><b>Total Weight</b></td>
+                    <td colspan="2"><b>{{ totalWeight }}</b></td>
+                    <td><b>{{ totalArm }}</b></td>
+                    <td><b>{{ totalMom }}</b></td>
+                </tr>
+            </table>
+            <br>
+            {{ form.calc }}
+        </form>
+
+
+    </p>
+</div>
+{%endblock%}

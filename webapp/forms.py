@@ -13,3 +13,13 @@ class weatherResultForm(FlaskForm):
 class aptinfoForm(FlaskForm):
     icao = TextField('ICAO')
     submit = SubmitField('Submit')
+
+class wbForm(FlaskForm):
+    frontSeatWeightL = TextField('frontSeatWeightL')
+    frontSeatWeightR = TextField('frontSeatWeightR')
+    backSeatWeightL = TextField('backSeatWeightL')
+    backSeatWeightR = TextField('backSeatWeightR')
+    baggage1Weight = TextField('baggage1Weight')
+    baggage2Weight = TextField('baggage2Weight')
+    fuelGal = TextField('fuelGal')
+    calc = SubmitField('Calculate')
