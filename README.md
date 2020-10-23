@@ -1,6 +1,6 @@
 Aviation App
 -------------------------------
-A simple Python web application utilizing the Flask framework with Jinja templating that retrieves information related to north american airports and aviation weather.
+A simple Python web application utilizing the Flask framework with Jinja templating that retrieves information related to north american airports and aviation weather along with providing a sample weight & balance calculator for a C172M.
 
 Info
 -------------------------------
