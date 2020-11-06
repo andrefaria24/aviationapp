@@ -8,9 +8,3 @@ Info
 ICAO code is required for querying (ex: KJFK for John F Kennedy International Airport).
 
 Weather information is retreived in METAR format.
-
-Docker Container Instructions
--------------------------------
-
-1. Run docker-compose build command in root dir to build services
-2. Create and start containers with docker-compose up -d command
