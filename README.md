@@ -9,8 +9,6 @@ ICAO code is required for querying (ex: KJFK for John F Kennedy International Ai
 
 Weather information is retreived in METAR format.
 
-Web application is utilizing port 8080.
-
 Docker Container Instructions
 -------------------------------
 
