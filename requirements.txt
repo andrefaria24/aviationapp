@@ -2,4 +2,3 @@ flask
 flask-wtf
 beautifulsoup4
 requests
-re
