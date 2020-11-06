@@ -199,5 +199,5 @@ def wb():
         
         return render_template('wb.html', form=wbForm(), emptyWeight = emptyWeight, emptyWeightArm = emptyWeightArm, emptyWeightMom = emptyWeightMom, frontSeatWeightL = frontSeatWeightL, frontSeatWeightR = frontSeatWeightR, backSeatWeightL = backSeatWeightL, backSeatWeightR = backSeatWeightR, baggage1Weight = baggage1Weight, baggage2Weight = baggage2Weight, frontSeatArm = frontSeatArm, backSeatArm = backSeatArm, baggage1Arm = baggage1Arm, baggage2Arm = baggage2Arm, fuelArm = fuelArm, frontSeatMom = frontSeatMom, backSeatMom = backSeatMom, baggage1Mom = baggage1Mom, baggage2Mom = baggage2Mom, zFuelWeight = zFuelWeight, zFuelMom = "{:.2f}".format(zFuelMom), zFuelArm = "{:.2f}".format(zFuelArm), fuelWeight = fuelWeight, fuelMom = "{:.2f}".format(fuelMom), fuelGal = fuelGal, totalWeight = totalWeight, totalMom = totalMom, totalArm = "{:.2f}".format(totalArm))
 
-if __name__ == '__main__':
-    app.run(debug=False, port='80')
+#if __name__ == '__main__':
+#    app.run(debug=False, port='80')
