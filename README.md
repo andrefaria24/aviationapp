@@ -4,7 +4,8 @@ A simple Python web application utilizing the Flask framework with Jinja templat
 
 Info
 -------------------------------
-
 ICAO code is required for querying (ex: KJFK for John F Kennedy International Airport).
 
 Weather information is retreived in METAR format.
+
+Live website: https://devfariaaviationapp.azurewebsites.net/
