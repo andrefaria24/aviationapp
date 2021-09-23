@@ -7,3 +7,5 @@ Info
 ICAO code is required for querying (ex: KJFK for John F Kennedy International Airport).
 
 Weather information is retreived in METAR format.
+
+Live URL: https://app-avapp-01.azurewebsites.net/
