@@ -8,4 +8,4 @@ ICAO code is required for querying (ex: KJFK for John F Kennedy International Ai
 
 Weather information is retreived in METAR format.
 
-Live website: https://devfariaaviationapp.azurewebsites.net/
+Live website: https://app-aviationapp.azurewebsites.net

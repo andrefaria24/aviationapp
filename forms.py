@@ -2,19 +2,19 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextField, SubmitField, RadioField
 from wtforms.validators import DataRequired, Length
 
-class weatherForm(FlaskForm):
+class weather_form(FlaskForm):
     icao = TextField('ICAO')
     wxchoice = RadioField('WxChoices', choices=[('wxsingle','Get latest weather from single airport'),('wxradius','Get latest weather within a 25nm radius of selected airport')])
     submit = SubmitField('Submit')
 
-class weatherResultForm(FlaskForm):
+class weather_result_form(FlaskForm):
     result = TextField('Result')
 
-class aptinfoForm(FlaskForm):
+class apt_info_form(FlaskForm):
     icao = TextField('ICAO')
     submit = SubmitField('Submit')
 
-class wbForm(FlaskForm):
+class wb_form(FlaskForm):
     frontSeatWeightL = TextField('frontSeatWeightL')
     frontSeatWeightR = TextField('frontSeatWeightR')
     backSeatWeightL = TextField('backSeatWeightL')
