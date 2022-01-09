@@ -2,3 +2,4 @@ flask==2.0.2
 flask-wtf==1.0.0
 beautifulsoup4==4.10.0
 requests==2.27.1
+WTForms==2.3.3
